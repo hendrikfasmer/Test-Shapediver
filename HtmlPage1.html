@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>ShapeDiver demo</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <script src="https://viewer.shapediver.com/v2/2.13.0/sdv.concat.min.js"></script>
+    <script type="text/javascript"></script>
+</head>
+
+<body>
+
+    <form id="form1">
+        Type:&nbsp;<br>
+
+        <input type="radio" name="gender" value="0" checked onchange="changeExtrusionType(val) {(this.value)">TEXLED100<br>
+        <input type="radio" name="gender" value="1" onchange="changeExtrusionType(this.value)">TEXLED100T<br>
+        <input type="radio" name="gender" value="2" onchange="changeExtrusionType(this.value)">TEXLEDSSLD15<br>
+
+        Bredde:&nbsp;
+        <input type="number" min="50" max="2000" step="0.1" value=1000 onchange="changeWidth(this.value)" />
+        Høyde:&nbsp;
+        <input type="number" min="50" max="2000" step="0.1" value=1000 onchange="changeHeight(this.value)" />
+        Explode:&nbsp;
+        <input type="number" min="0" max="20" step="1" value=20 onchange="changeExplode(this.value)" />
+        LED i topp/bunn:&nbsp;
+        <input type="number" min="0" max="20" step="1" value=0 onchange="changeNo_LED_Bottom(this.value)" />
+        LED i sider:&nbsp;
+        <input type="number" min="0" max="20" step="1" value=0 onchange="changeNo_LED_Left(this.value)" />
+        <br />
+
+        <asp:panel ID="Shapediver" runat="server">
+            <div id='epm_test_sdv-container' style="width:600px;height:500px;" />
+        </asp:panel>
+        
+    </form>
+</body>
+</html>
+<script>
+
+    // container for the viewer, typically this is a div
+
+
+
+        var _container = document.getElementById('epm_test_sdv-container');
+        var _viewerSettings = {
+            container: _container,
+            // when creating the viewer, we want to get back an API v2 object
+            api: { version: 2 },
+            // ticket for a ShapeDiver model
+            ticket: 'e8f1262783ff265b84d9ed45aa703e30d5bf076cc5b40574fb613d0a564a32e92bd18e94f15570dc500a3ffa4c555fc4a063322647cc3a01bee9d5967b38d8f1829581ae059f7a036b3abfaf10e196c6b69e74dfedf3e30af1674561fc5af21847e56594008ef7cfea2b35014af692f2d89d51cec5da-5778656892de0292766b275bb63a249b-272c8f41fbde48347d001a72899d018c-2cb213256002ce3207842331cb454ff0',
+            modelViewUrl: 'eu-central-1'
+        };
+
+        // create the viewer, get back an API v2 object
+        var api = new SDVApp.ParametricViewer(_viewerSettings);
+        var viewerInit = false;
+
+        api.scene.addEventListener(api.scene.EVENTTYPE.VISIBILITY_ON, function () {
+
+            if (!viewerInit) {
+                window.alert("Oppstart - kostnader påløper")
+            }
+            viewerInit = true;
+        }
+        );
+       
+    function changeWidth(val) {
+        api.parameters.updateAsync({ name: "Bredde", value: val }).then(
+            function (result) {
+                api.scene.camera.zoomAsync();
+            }
+        );
+    }
+
+    function changeHeight(val) {
+        api.parameters.updateAsync({ name: "Høyde", value: val }).then(
+            function (result) {
+                api.scene.camera.zoomAsync();
+            }
+        );
+    }
+
+    function changeNo_LED_Bottom(val) {
+        api.parameters.updateAsync({ name: "No_LED_Bottom", value: val }).then(
+            function (result) {
+                api.scene.camera.zoomAsync();
+            }
+        );
+    }
+
+    function changeNo_LED_Left(val) {
+        api.parameters.updateAsync({ name: "No_LED_Left", value: val }).then(
+            function (result) {
+                api.scene.camera.zoomAsync();
+            }
+        );
+    }
+    function changeExplode(val) {
+        api.parameters.updateAsync({ name: "Explode", value: val }).then(
+            function (result) {
+                api.scene.camera.zoomAsync();
+            }
+        );
+    }
+        
+    function changeExtrusionType(val) {
+         api.parameters.updateAsync({ name: "ExtrusionType", value: val }).then(
+             
+            function (result) {
+                api.scene.camera.zoomAsync();
+             }
+             
+        );
+    }
+
+    
+</script>
+
+
+
